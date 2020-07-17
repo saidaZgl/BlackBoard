@@ -3,6 +3,7 @@ var router = express.Router();
 
 const articleModel = require("../models/articles");
 const orderModel = require("../models/orders");
+const userModel = require("../models/users");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -20,8 +21,9 @@ router.get("/messages-page", function (req, res, next) {
 });
 
 /* GET Users page. */
-router.get("/users-page", function (req, res, next) {
-  res.render("users");
+router.get("/users-page", async function (req, res, next) {
+  const users = await userModel.find({ status: "customer" });
+  res.render("users", { users });
 });
 
 /* GET Catalog page. */
