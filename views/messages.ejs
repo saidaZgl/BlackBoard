@@ -59,7 +59,7 @@
               <td><i class="fas <%= read %>"></i></td>
               <td><%= messages[i].title %></td>
               <td><%= messages[i].sender %></td>
-              <td><%= messages[i].dateExp %></td>
+              <td><%= dateFormat(messages[i].dateExp) %></td>
             </tr>
             <%}%>
             </tbody>

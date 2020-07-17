@@ -6,8 +6,32 @@ const orderModel = require("../models/orders");
 const userModel = require("../models/users");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index");
+router.get("/", async function (req, res, next) {
+  const emptyStocks = await articleModel.find({ stock: 0 });
+
+  const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+  const messages = user.messages;
+
+  let unreadMessages = 0;
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].read == false) {
+      unreadMessages += 1;
+    }
+  }
+  const taches = user.tasks;
+  let tasksInprogress = 0;
+
+  for (let i = 0; i < taches.length; i++) {
+    if (taches[i].dateCloture == null) {
+      tasksInprogress += 1;
+    }
+  }
+
+  res.render("index", {
+    emptyStocks: emptyStocks.length,
+    unreadMessages,
+    tasksInprogress,
+  });
 });
 
 /* GET tasks page. */
