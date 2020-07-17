@@ -11,8 +11,9 @@ router.get("/", function (req, res, next) {
 });
 
 /* GET tasks page. */
-router.get("/tasks-page", function (req, res, next) {
-  res.render("tasks");
+router.get("/tasks-page", async function (req, res, next) {
+  const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+  res.render("tasks", { taches: user.tasks });
 });
 
 /* GET Messages page. */

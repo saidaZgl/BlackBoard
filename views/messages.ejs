@@ -111,9 +111,15 @@
           </thead>
           <tbody>
             <% 
-              for(let i = 0; i < messages.length; i++) { %>
+              for(let i = 0; i < messages.length; i++) { 
+                if(messages[i].read) {
+                  var read = "fas fa-envelope-open"
+                } else {
+                  var read = "fas fa-envelope"
+                }
+                %>
             <tr>
-              <td><i class="fas fa-envelope"></i></td>
+              <td><i class="fas <%= read %>"></i></td>
               <td><%= messages[i].title %></td>
               <td><%= messages[i].sender %></td>
               <td><%= messages[i].dateExp %></td>
