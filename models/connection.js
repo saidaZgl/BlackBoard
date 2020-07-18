@@ -6,12 +6,12 @@ const options = {
   useNewUrlParser: true,
 };
 
-mongoose.connect(
-  "mongodb+srv://lacapsule:EXIrgUdaFEllfNSH@cluster0-9xbpy.mongodb.net/blackboard?authSource=admin&replicaSet=Cluster0-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass%20Community&retryWrites=true&ssl=true",
-  options,
-  function (err) {
-    console.log(err);
+mongoose.connect(`${process.env.MONGODB_URI}`, options, function (error) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("++++++++++++ Connection BDD OK ++++++++++++");
   }
-);
+});
 
 module.exports = mongoose;
