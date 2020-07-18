@@ -13,11 +13,7 @@ var firstChart = new Chart(ctx, {
       {
         label: "Utilisateurs par sexe",
         data: data,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-        ],
+        backgroundColor: ["#ff6b81", "#70a1ff"],
         borderWidth: 1,
       },
     ],
@@ -31,6 +27,9 @@ var firstChart = new Chart(ctx, {
           },
         },
       ],
+    },
+    legend: {
+      display: false,
     },
   },
 });
@@ -50,11 +49,7 @@ var firstChart = new Chart(ctx, {
       {
         label: "Messages",
         data: data,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-        ],
+        backgroundColor: ["#2ecc71", "#e67e22"],
         borderWidth: 1,
       },
     ],
@@ -68,6 +63,83 @@ var firstChart = new Chart(ctx, {
           },
         },
       ],
+    },
+  },
+});
+
+var ctx = document.getElementById("chartpie");
+
+var nbExp = ctx.dataset.exp;
+var nbNonExp = ctx.dataset.nonexp;
+var labels = ["expédiées", "non expédiées"];
+var data = [nbExp, nbNonExp];
+
+var firstChart = new Chart(ctx, {
+  type: "pie",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        label: "Commandes",
+        data: data,
+        backgroundColor: ["#16a085", "#f1c40f"],
+        borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  },
+});
+
+var ctx = document.getElementById("linechart");
+
+var data = JSON.parse(ctx.dataset.chartviz);
+
+var userCountByMonthLabels = [];
+var userCountByMonthDataResults = [];
+
+for (var i = 0; i < data.length; i++) {
+  var date = new Date(data[i]._id.year, data[i]._id.month - 1, 1);
+  var month = date.toLocaleString("default", { month: "long" });
+
+  userCountByMonthLabels.push(month);
+
+  userCountByMonthDataResults.push(data[i].CA);
+}
+
+var firstChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: userCountByMonthLabels,
+    datasets: [
+      {
+        data: userCountByMonthDataResults,
+        backgroundColor: "#f8c291",
+        borderColor: "#e55039",
+      },
+    ],
+  },
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+    legend: {
+      display: false,
     },
   },
 });

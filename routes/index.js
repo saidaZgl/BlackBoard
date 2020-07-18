@@ -108,7 +108,42 @@ router.get("/charts", async function (req, res, next) {
       messLus += 1;
     }
   }
-  res.render("charts", { numMale, numFemale, messNonLus, messLus });
+
+  const orders = await orderModel.find({ status_payment: "validated" });
+
+  let nbExp = 0;
+  let nbNonExp = 0;
+
+  for (let i = 0; i < orders.length; i++) {
+    if (orders[i].status_shipment == true) {
+      nbExp++;
+    } else {
+      nbNonExp++;
+    }
+  }
+
+  var aggr = orderModel.aggregate();
+
+  aggr.match({ status_payment: "validated" });
+
+  aggr.group({
+    _id: { year: { $year: "$date_insert" }, month: { $month: "$date_insert" } },
+    CA: { $sum: "$total" },
+  });
+
+  aggr.sort({ _id: 1 });
+
+  var totalCAByMonth = await aggr.exec();
+
+  res.render("charts", {
+    numMale,
+    numFemale,
+    messNonLus,
+    messLus,
+    nbExp,
+    nbNonExp,
+    totalCAByMonth,
+  });
 });
 
 module.exports = router;
