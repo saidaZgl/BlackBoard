@@ -10,6 +10,7 @@ router.get("/", async function (req, res, next) {
   const emptyStocks = await articleModel.find({ stock: 0 });
 
   const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+
   const messages = user.messages;
 
   let unreadMessages = 0;
@@ -37,18 +38,21 @@ router.get("/", async function (req, res, next) {
 /* GET tasks page. */
 router.get("/tasks-page", async function (req, res, next) {
   const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+
   res.render("tasks", { taches: user.tasks });
 });
 
 /* GET Messages page. */
 router.get("/messages-page", async function (req, res, next) {
   const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+
   res.render("messages", { messages: user.messages });
 });
 
 /* GET Users page. */
 router.get("/users-page", async function (req, res, next) {
   const users = await userModel.find({ status: "customer" });
+
   res.render("users", { users });
 });
 
@@ -77,8 +81,34 @@ router.get("/order-page", async function (req, res, next) {
 });
 
 /* GET chart page. */
-router.get("/charts", function (req, res, next) {
-  res.render("charts");
+router.get("/charts", async function (req, res, next) {
+  const users = await userModel.find();
+
+  let numMale = 0;
+  let numFemale = 0;
+
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].gender == "male") {
+      numMale++;
+    } else {
+      numFemale++;
+    }
+  }
+
+  const user = await userModel.findById("5c52e4efaa4beef85aad5e52");
+
+  const messages = user.messages;
+
+  let messNonLus = 0;
+  let messLus = 0;
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].read == false) {
+      messNonLus += 1;
+    } else {
+      messLus += 1;
+    }
+  }
+  res.render("charts", { numMale, numFemale, messNonLus, messLus });
 });
 
 module.exports = router;
